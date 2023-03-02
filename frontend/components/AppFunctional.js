@@ -1,5 +1,6 @@
 import React from 'react'
 
+
 // Suggested initial states
 const initialMessage = ''
 const initialEmail = ''

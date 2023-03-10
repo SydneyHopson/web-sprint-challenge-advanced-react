@@ -20,26 +20,39 @@ export default class AppClass extends React.Component {
   // Declear state here step 1:
 
   state = {
+    
     message: '',
     email: '',
-    // moves: 0,
     steps: 0,
     index: 4,
-    grid: ['','','','','B','','','','',]
+    grid: [
+          { X:1 ,Y: 1 }, {X:2 ,Y: 1} ,{X:3 ,Y: 1 },
+          { X:1 ,Y: 2 }, {X:2 ,Y: 2} ,{X:3 ,Y: 2 },
+          { X:1 ,Y: 3 }, {X:2 ,Y: 3} ,{X:3 ,Y: 3 } ]
+   
 
   }
   
   
 
-  getXY = () => {
+  getXY = (index) => { 
+    this.setState({
+      index: this.state.grid ,
+     })
+    //  console.log(getXY)
+    
     // square moving
-
-
     // It it not necessary to have a state to track the coordinates.
     // It's enough to know what index the "B" is at, to be able to calculate them.
   }
+  
 
   getXYMessage = () => {
+    this.setState({
+
+    })
+
+   
     // actual coordinates
 
 
@@ -49,24 +62,114 @@ export default class AppClass extends React.Component {
   }
 
   reset = () => {
-    // default reset
+    this.setState({
+    
+      message: '',
+      email: '',
+      steps: 0,
+      index: 4,
+      grid: [
+            { X:1 ,Y: 1 }, {X:2 ,Y: 1} ,{X:3 ,Y: 1 },
+            { X:1 ,Y: 2 }, {X:2 ,Y: 2} ,{X:3 ,Y: 2 },
+            { X:1 ,Y: 3 }, {X:2 ,Y: 3} ,{X:3 ,Y: 3 } ]
+     
+  
+    })
 
-    // Use this helper to reset all states to their initial values.
+    // default reset
+   // Use this helper to reset all states to their initial values.
   }
 
   getNextIndex = (direction) => {
-
+    if(this.state.grid[this.moveLeft]){
+      this.setstate({
+        ...this.state,
+        message: 'You cant go left'
+      })
+    }
+    
+   
+  
 
     // This helper takes a direction ("left", "up", etc) and calculates what the next index
     // of the "B" would be. If the move is impossible because we are at the edge of the grid,
     // this helper should return the current index unchanged.
   }
 
-  move = (evt) => {
-    // directions start with one
-    // This event handler can use the helper above to obtain a new index for the "B",
-    // and change any states accordingly.
+
+  moveDown = () => {
+    if(this.state.index === 6 || this.state.index === 7 || this.state.index === 8 ){
+      console.log('tada')
+      this.setState({
+        ...this.state,
+        message: " You can't go down"
+      })}
+      else {
+    this.setState({
+    ...this.state, 
+    index: this.state.index +3,
+    steps: this.state.steps +1
+    })}
   }
+
+
+
+
+
+
+  
+  moveUp = () => {
+    if(this.state.index === 1 || this.state.index === 2|| this.state.index === 0 ){
+      console.log('tada')
+      this.setState({
+        ...this.state,
+        message: " You can't go up"
+      })}
+      else{
+    this.setState({
+    ...this.state, 
+    index: this.state.index -3,
+    steps: this.state.steps +1
+    })}
+  }
+
+
+
+
+
+  moveRight = () => {
+    if(this.state.index === 5 || this.state.index === 8 || this.state.index === 2 ){
+      console.log('tada')
+      this.setState({
+        ...this.state,
+        message: " You can't go right"
+      })}else{
+    this.setState({
+    ...this.state, 
+    index: this.state.index +1,
+    steps: this.state.steps +1
+    })}
+  }
+
+
+  moveLeft = () => {
+    if(this.state.index === 3 || this.state.index === 0 || this.state.index === 6 ){
+      console.log('tada')
+      this.setState({
+        ...this.state,
+        message: " You can't go left"
+      })}
+      else{
+    this.setState({
+    ...this.state, 
+    index: this.state.index -1,
+    steps: this.state.steps + 1
+    
+    })}
+  }
+
+  
+  
 
   onChange = (evt) => {
     
@@ -79,32 +182,62 @@ export default class AppClass extends React.Component {
 
   render() {
     const { className } = this.props;
-    const { index, steps, grid  } = this.state;
+    const { index, steps, moveLeft, moveRight, grid, move  } = this.state;
     return (
       <div id="wrapper" className={className}>
         <div className="info">
-          <h3 id="coordinates">Coordinates {this.state.index}  </h3>
-          <h3 id="steps">You moved {this.state.steps} times</h3>
+          <h3 id="coordinates">{`Coordinates (${grid[index].X}, ${grid[index].Y})`}</h3>
+          <h3 id="steps">{`You moved  ${steps} ${steps <= 1 ? 'time' : 'times'}`}</h3>
         </div>
         <div id="grid">
           {
-            grid.map((val, idx) => (
-              <div key={idx} className={`square${idx === 4 ? ' active' : ''}`}>
-                {idx === 4 ? 'B' : null}
+            grid.map((val, idx) => (     //where ever the idx is the style will go
+              <div  key={idx} className={`square${idx === index ? ' active' : ''}`}>
+               {/* where ever the idx is the letter will go */}
+                {idx === index ? 'B' : null}
               </div>
             ))
           }
         </div>
         <div className="info">
-          <h3 id="message"></h3>
-        </div>
+          <h3 id="message">{this.state.message}</h3> 
+          </div>
+
         <div id="keypad">
-          <button id="left">LEFT</button>
-          <button id="up">UP</button>
-          <button id="right">RIGHT</button>
-          <button id="down">DOWN</button>
-          <button id="reset">reset</button>
+          <button onClick={()=> {
+            this.moveLeft();
+          }} id="left">LEFT</button>
+          
+          
+          
+          
+          
+          <button onClick={()=>{
+            this.moveUp();
+          }} id="up">UP</button>
+            
+
+
+          <button onClick={() => {
+            this.moveRight();
+         }} id="right">RIGHT</button>
+
+
+          <button onClick={() => {
+            this.moveDown();
+          }} id="down">DOWN</button>
+
+
+
+
+          <button onClick={() => {
+            this.reset();
+          }} id="reset">reset</button>
         </div>
+       
+        
+        
+        
         <form>
           <input id="email" type="email" placeholder="type email"></input>
           <input id="submit" type="submit"></input>

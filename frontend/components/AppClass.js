@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useState} from 'react'
+import axios from 'axios'
 
 // Suggested initial states
 const initialMessage = ''
@@ -18,6 +19,11 @@ export default class AppClass extends React.Component {
   // You can delete them and build your own logic from scratch.
 
   // Declear state here step 1:
+  constructor(props) {
+    super(props);
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onChange.bind(this);
+  }
 
   state = {
     
@@ -32,9 +38,6 @@ export default class AppClass extends React.Component {
    
 
   }
-  
-  
-
   getXY = (index) => { 
     this.setState({
       index: this.state.grid ,
@@ -111,13 +114,6 @@ export default class AppClass extends React.Component {
     steps: this.state.steps +1
     })}
   }
-
-
-
-
-
-
-  
   moveUp = () => {
     if(this.state.index === 1 || this.state.index === 2|| this.state.index === 0 ){
       console.log('tada')
@@ -132,11 +128,6 @@ export default class AppClass extends React.Component {
     steps: this.state.steps +1
     })}
   }
-
-
-
-
-
   moveRight = () => {
     if(this.state.index === 5 || this.state.index === 8 || this.state.index === 2 ){
       console.log('tada')
@@ -150,8 +141,6 @@ export default class AppClass extends React.Component {
     steps: this.state.steps +1
     })}
   }
-
-
   moveLeft = () => {
     if(this.state.index === 3 || this.state.index === 0 || this.state.index === 6 ){
       console.log('tada')
@@ -167,22 +156,56 @@ export default class AppClass extends React.Component {
     
     })}
   }
-
   
   
+  
 
-  onChange = (evt) => {
+  onChange = (evt) => { 
+    const email = evt.target.value;
+    console.log(email)
+  this.setState({ 
+  email: email });
+   
+
+    console.log(evt.target.email, evt.target.value)
+    // const {  email, value } = evt.target
+    // this.setState.email
+    // setState({...form, [email]: value })
+
+    
     
     // You will need this to update the value of the input.
   }
+  
 
   onSubmit = (evt) => {
+ 
+   
+    const [form, setForm] = useState({
+    X: '',
+    Y: '',
+    steps: '',
+    email: ''
+    })
+    
+    
+    evt.preventDefault();
+    console.log(form)
+    axios.post('http://localhost:9000/api/result', form)
+    .then(res => {
+      console.log(res)
+      setForm({...form })
+    
+    })
+    .catch(err => console.log(err)) 
+    console.log('form was submitted', form)
+
     // Use a POST request to send a payload to the server.
   }
 
   render() {
     const { className } = this.props;
-    const { index, steps, moveLeft, moveRight, grid, move  } = this.state;
+    const { index, steps, onChange, onSubmit, grid, move  } = this.state;
     return (
       <div id="wrapper" className={className}>
         <div className="info">
@@ -239,8 +262,21 @@ export default class AppClass extends React.Component {
         
         
         <form>
-          <input id="email" type="email" placeholder="type email"></input>
-          <input id="submit" type="submit"></input>
+          <input 
+          id="email" 
+          type="email" 
+          value={this.state.email}
+          placeholder="type email" 
+          //  onChange={(e) => {this.setState({email: e.target.value})}}>
+          onChange={this.onChange.bind(this)}> 
+          </input>
+          
+          
+          
+          <input  
+          onSubmit={this.onSubmit.bind(this)} 
+          id="submit" 
+          type="submit"></input>
         </form>
       </div>
     )

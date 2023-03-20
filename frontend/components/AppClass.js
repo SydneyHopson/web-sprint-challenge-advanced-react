@@ -1,4 +1,4 @@
-import React, { useState} from 'react'
+import React from 'react'
 import axios from 'axios'
 
 // Suggested initial states
@@ -15,15 +15,13 @@ const initialState = {
 }
 
 export default class AppClass extends React.Component {
+  
+
+
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
   // You can delete them and build your own logic from scratch.
 
   // Declear state here step 1:
-  constructor(props) {
-    super(props);
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onChange.bind(this);
-  }
 
   state = {
     
@@ -163,8 +161,8 @@ export default class AppClass extends React.Component {
   onChange = (evt) => { 
     const email = evt.target.value;
     console.log(email)
-  this.setState({ 
-  email: email });
+    this.setState({ 
+    email: email });
    
 
     console.log(evt.target.email, evt.target.value)
@@ -179,26 +177,27 @@ export default class AppClass extends React.Component {
   
 
   onSubmit = (evt) => {
- 
-   
-    const [form, setForm] = useState({
-    X: '',
-    Y: '',
-    steps: '',
-    email: ''
-    })
+    console.log('form was submitted')
+   evt.preventDefault();
+   const newForm = {X:"", Y:"", steps: steps , email: ""}
+   console.log(newForm)
     
+
+  
+    // axios.post('http://localhost:9000/api/result', form)
+    // .then(res => {
+    //   // console.log(res.data)
+    //   this.setState({
+    //     ...this.state,
+    //     X: "",
+    //   Y: "",
+    //   email: "",
+    //   steps: "",
+       
+    //   })
+    // })
+    // .catch(err => console.error(err))
     
-    evt.preventDefault();
-    console.log(form)
-    axios.post('http://localhost:9000/api/result', form)
-    .then(res => {
-      console.log(res)
-      setForm({...form })
-    
-    })
-    .catch(err => console.log(err)) 
-    console.log('form was submitted', form)
 
     // Use a POST request to send a payload to the server.
   }
@@ -268,15 +267,15 @@ export default class AppClass extends React.Component {
           value={this.state.email}
           placeholder="type email" 
           //  onChange={(e) => {this.setState({email: e.target.value})}}>
-          onChange={this.onChange.bind(this)}> 
-          </input>
+          onChange={this.onChange.bind(this)}/> 
+          
           
           
           
           <input  
-          onSubmit={this.onSubmit.bind(this)} 
+          onSubmit={this.onSubmit} 
           id="submit" 
-          type="submit"></input>
+          type="submit"/>
         </form>
       </div>
     )

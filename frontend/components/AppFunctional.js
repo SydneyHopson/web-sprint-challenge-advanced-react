@@ -8,6 +8,8 @@ const initialSteps = 0
 const initialIndex = 4 // the index the "B" is at
 
 export default function AppFunctional(props) {
+
+ const [form, setForm] = useState({ X:'', Y:'', steps: '', email: ''})
   const [state, setState ] = useState({
     
     message: '',
@@ -185,9 +187,9 @@ export default function AppFunctional(props) {
         <div id="grid">
           {
             state.grid.map((val, idx, index) => (     //where ever the idx is the style will go
-              <div  key={index} className={`square${state.idx === state.index ? ' active' : ''}`}>
+              <div  key={index} className={`square${state.index === state.idx ? ' active' : ''}`}>
                {/* where ever the idx is the letter will go */}
-                {state.index === state.idx ? 'B' : null}
+                {state.idx === state.index ? 'B' : null}
               </div>
             ))
           }

@@ -179,24 +179,25 @@ export default class AppClass extends React.Component {
   onSubmit = (evt) => {
     console.log('form was submitted')
    evt.preventDefault();
-   const newForm = {X:"", Y:"", steps: steps , email: ""}
+   const newForm = { X: this.state.grid[this.state.index].X, y: this.state.grid[this.state.index].Y, steps: this.state.steps , email: this.state.email}
    console.log(newForm)
     
 
   
-    // axios.post('http://localhost:9000/api/result', form)
-    // .then(res => {
-    //   // console.log(res.data)
-    //   this.setState({
-    //     ...this.state,
-    //     X: "",
-    //   Y: "",
-    //   email: "",
-    //   steps: "",
-       
-    //   })
-    // })
-    // .catch(err => console.error(err))
+    axios.post('http://localhost:9000/api/result', newForm)
+    .then(res => {
+      console.log(res)
+      this.setState({
+        ...this.state,
+      message: `${res.data.message}`
+      })
+    })
+    .catch(err => 
+      console.log(err))
+    this.setState({
+      ...this.state,
+      message: `${err.message}`
+    })
     
 
     // Use a POST request to send a payload to the server.
@@ -266,14 +267,13 @@ export default class AppClass extends React.Component {
           type="email" 
           value={this.state.email}
           placeholder="type email" 
-          //  onChange={(e) => {this.setState({email: e.target.value})}}>
-          onChange={this.onChange.bind(this)}/> 
+          onChange={this.onChange}/> 
           
           
           
           
           <input  
-          onSubmit={this.onSubmit} 
+          onClick={this.onSubmit}
           id="submit" 
           type="submit"/>
         </form>

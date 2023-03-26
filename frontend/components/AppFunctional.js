@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import axios from 'axios'
 
 
 // Suggested initial states
@@ -69,15 +70,15 @@ export default function AppFunctional(props) {
 
     // default reset
    // Use this helper to reset all states to their initial values.
-  }
+  // }
 
-   const getNextIndex = (direction) => {
-    if(state.grid[moveLeft]){
-      setstate({
-        ...state,
-        message: 'You cant go left'
-      })
-    }
+  //  const getNextIndex = (direction) => {
+  //   if(state.grid[moveLeft]){
+  //     setstate({
+  //       ...state,
+  //       message: 'You cant go left'
+  //     })
+    // }
     
    
   
@@ -161,20 +162,37 @@ export default function AppFunctional(props) {
    const onChange = (evt) => { 
     const email = evt.target.value;
     console.log(email)
-    this.setState({ 
-      email: email });
-      console.log(evt.target.email, evt.target.value)
-   
-    
-    
+    setState({ 
+    ...state,
+
+    // message: (`${error.response.data.message}`),
+    email: email })
+    console.log(evt.target.email, evt.target.value)
     // You will need this to update the value of the input.
   }
 
  const onSubmit = (evt) => {
-    evt.preventDefault();
-    onSubmit();
-
-
+  console.log('form was submitted')
+ evt.preventDefault();
+ const newForm = { x: state.grid[state.index].X, y: state.grid[state.index].Y, steps: state.steps , email: state.email}
+ console.log(newForm)
+ 
+   axios.post('http://localhost:9000/api/result', newForm)
+    .then(res => {
+      console.log(res)
+      setState({
+        ...state,
+      message: `${res.data.message}`
+      })
+    })
+   .catch(err => {
+    console.log(err)
+    setState({
+      ...state,
+      message: `${err.message}`,
+      
+    })
+   })
     // Use a POST request to send a payload to the server.
   }
 
@@ -182,14 +200,14 @@ export default function AppFunctional(props) {
     <div id="wrapper" className={props.className}>
      <div className="info">
           <h3 id="coordinates">{`Coordinates (${state.grid[state.index].X}, ${state.grid[state.index].Y})`}</h3>
-          <h3 id="steps">{`You moved  ${state.steps} ${state.steps <= 1 ? 'time' : 'times'}`}</h3>
+          <h3 id="steps">{`You moved ${state.steps} ${state.steps <= 1 ? 'time' : 'times'}`}</h3>
         </div>
         <div id="grid">
           {
             state.grid.map((val, idx, index) => (     //where ever the idx is the style will go
-              <div  key={index} className={`square${state.index === state.idx ? ' active' : ''}`}>
+              <div  key={idx} className={`square ${state.index === idx ? ' active' : ''}`}>
                {/* where ever the idx is the letter will go */}
-                {state.idx === state.index ? 'B' : null}
+                { idx === state.index ? 'B' : null}
               </div>
             ))
           }
@@ -230,8 +248,17 @@ export default function AppFunctional(props) {
           }} id="reset">reset</button>
         </div>
       <form>
-        <input id="email" type="email" placeholder="type email" onChange={state.onChange}></input>
-        <input id="submit" type="submit"></input>
+        <input id="email" 
+         type="email" 
+         placeholder="type email" 
+         onChange={onChange}
+         />
+
+
+        <input id="submit" 
+        type="submit"
+        onClick={onSubmit}
+        ></input>
       </form>
     </div>
   )

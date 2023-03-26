@@ -103,7 +103,7 @@ export default class AppClass extends React.Component {
       console.log('tada')
       this.setState({
         ...this.state,
-        message: " You can't go down"
+        message: "You can't go down"
       })}
       else {
     this.setState({
@@ -117,7 +117,7 @@ export default class AppClass extends React.Component {
       console.log('tada')
       this.setState({
         ...this.state,
-        message: " You can't go up"
+        message: "You can't go up"
       })}
       else{
     this.setState({
@@ -131,7 +131,7 @@ export default class AppClass extends React.Component {
       console.log('tada')
       this.setState({
         ...this.state,
-        message: " You can't go right"
+        message: "You can't go right"
       })}else{
     this.setState({
     ...this.state, 
@@ -144,7 +144,7 @@ export default class AppClass extends React.Component {
       console.log('tada')
       this.setState({
         ...this.state,
-        message: " You can't go left"
+        message: "You can't go left"
       })}
       else{
     this.setState({
@@ -163,15 +163,7 @@ export default class AppClass extends React.Component {
     console.log(email)
     this.setState({ 
     email: email });
-   
-
     console.log(evt.target.email, evt.target.value)
-    // const {  email, value } = evt.target
-    // this.setState.email
-    // setState({...form, [email]: value })
-
-    
-    
     // You will need this to update the value of the input.
   }
   
@@ -182,9 +174,7 @@ export default class AppClass extends React.Component {
    const newForm = { x: this.state.grid[this.state.index].X, y: this.state.grid[this.state.index].Y, steps: this.state.steps , email: this.state.email}
    console.log(newForm)
     
-
-  
-    axios.post('http://localhost:9000/api/result', newForm)
+   axios.post('http://localhost:9000/api/result', newForm)
     .then(res => {
       console.log(res)
       this.setState({
@@ -209,7 +199,7 @@ export default class AppClass extends React.Component {
       <div id="wrapper" className={className}>
         <div className="info">
           <h3 id="coordinates">{`Coordinates (${grid[index].X}, ${grid[index].Y})`}</h3>
-          <h3 id="steps">{`You moved  ${steps} ${steps <= 1 ? 'time' : 'times'}`}</h3>
+          <h3 id="steps">{`You moved ${steps} ${steps <= 1 ? 'time' : 'times'}`}</h3>
         </div>
         <div id="grid">
           {

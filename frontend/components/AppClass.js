@@ -179,7 +179,7 @@ export default class AppClass extends React.Component {
   onSubmit = (evt) => {
     console.log('form was submitted')
    evt.preventDefault();
-   const newForm = { X: this.state.grid[this.state.index].X, y: this.state.grid[this.state.index].Y, steps: this.state.steps , email: this.state.email}
+   const newForm = { x: this.state.grid[this.state.index].X, y: this.state.grid[this.state.index].Y, steps: this.state.steps , email: this.state.email}
    console.log(newForm)
     
 
@@ -192,14 +192,13 @@ export default class AppClass extends React.Component {
       message: `${res.data.message}`
       })
     })
-    .catch(err => 
-      console.log(err))
+   .catch(err => {
+    console.log(err)
     this.setState({
       ...this.state,
       message: `${err.message}`
     })
-    
-
+   })
     // Use a POST request to send a payload to the server.
   }
 

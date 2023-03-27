@@ -171,6 +171,7 @@ export default class AppClass extends React.Component {
   onSubmit = (evt) => {
     console.log('form was submitted')
    evt.preventDefault();
+   
    const newForm = { x: this.state.grid[this.state.index].X, y: this.state.grid[this.state.index].Y, steps: this.state.steps , email: this.state.email}
    console.log(newForm)
     
@@ -179,15 +180,22 @@ export default class AppClass extends React.Component {
       console.log(res)
       this.setState({
         ...this.state,
-      message: `${res.data.message}`
+        email: "",
+       
+        message: `${res.data.message}`,
+      
       })
     })
    .catch(err => {
     console.log(err)
     this.setState({
       ...this.state,
-      message: `${err.message}`
+      message: `${err.message}`,
+      message: `${err.response.data.message}`
+    
     })
+   
+   
    })
     // Use a POST request to send a payload to the server.
   }
@@ -199,7 +207,7 @@ export default class AppClass extends React.Component {
       <div id="wrapper" className={className}>
         <div className="info">
           <h3 id="coordinates">{`Coordinates (${grid[index].X}, ${grid[index].Y})`}</h3>
-          <h3 id="steps">{`You moved ${steps} ${steps <= 1 ? 'time' : 'times'}`}</h3>
+          <h3 id="steps">{`You moved ${steps} ${steps === 1 ? 'time' : 'times'}`}</h3>
         </div>
         <div id="grid">
           {

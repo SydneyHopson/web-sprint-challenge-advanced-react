@@ -10,8 +10,8 @@ const initialIndex = 4 // the index the "B" is at
 
 export default function AppFunctional(props) {
 
- const [form, setForm] = useState({ X:'', Y:'', steps: '', email: ''})
-  const [state, setState ] = useState({
+const [form, setForm] = useState({ X:'', Y:'', steps: '', email: ''})
+const [state, setState ] = useState({
     
     message: '',
     email: '',
@@ -21,18 +21,11 @@ export default function AppFunctional(props) {
           { X:1 ,Y: 1 }, {X:2 ,Y: 1} ,{X:3 ,Y: 1 },
           { X:1 ,Y: 2 }, {X:2 ,Y: 2} ,{X:3 ,Y: 2 },
           { X:1 ,Y: 3 }, {X:2 ,Y: 3} ,{X:3 ,Y: 3 } ]
-   
-
   })
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
   // You can delete them and build your own logic from scratch.
 
-  const getXY = (index) => { 
-    setState({
-      index: state.grid ,
-     })
-    //  console.log(getXY)
-    
+  const getXY = () => { 
     // square moving
     // It it not necessary to have a state to track the coordinates.
     // It's enough to know what index the "B" is at, to be able to calculate them.
@@ -40,22 +33,14 @@ export default function AppFunctional(props) {
   
 
   const getXYMessage = () => {
-    setState({
-
-    })
-
-   
     // actual coordinates
-
-
     // It it not necessary to have a state to track the "Coordinates (2, 2)" message for the user.
     // You can use the `getXY` helper above to obtain the coordinates, and then `getXYMessage`
     // returns the fully constructed string.
   }
 
- const reset = () => {
+  const reset = () => {
     setState({
-    
       message: '',
       email: '',
       steps: 0,
@@ -68,23 +53,10 @@ export default function AppFunctional(props) {
   
     })
 
-    // default reset
-   // Use this helper to reset all states to their initial values.
-  // }
-
-  //  const getNextIndex = (direction) => {
-  //   if(state.grid[moveLeft]){
-  //     setstate({
-  //       ...state,
-  //       message: 'You cant go left'
-  //     })
-    // }
-    
-   
-  
-
-    // This helper takes a direction ("left", "up", etc) and calculates what the next index
-    // of the "B" would be. If the move is impossible because we are at the edge of the grid,
+  // default reset
+  // Use this helper to reset all states to their initial values.
+  // This helper takes a direction ("left", "up", etc) and calculates what the next index
+  // of the "B" would be. If the move is impossible because we are at the edge of the grid,
     // this helper should return the current index unchanged.
   }
 
@@ -94,7 +66,7 @@ export default function AppFunctional(props) {
       console.log('tada')
       setState({
         ...state,
-        message: " You can't go down"
+        message: "You can't go down"
       })}
       else {
     setState({
@@ -115,7 +87,7 @@ export default function AppFunctional(props) {
       console.log('tada')
       setState({
         ...state,
-        message: " You can't go up"
+        message: "You can't go up"
       })}
       else{
     setState({
@@ -134,7 +106,7 @@ export default function AppFunctional(props) {
       console.log('tada')
       setState({
         ...state,
-        message: " You can't go right"
+        message: "You can't go right"
       })}else{
     setState({
     ...state, 
@@ -149,7 +121,7 @@ export default function AppFunctional(props) {
       console.log('tada')
       setState({
         ...state,
-        message: " You can't go left"
+        message: "You can't go left"
       })}
       else{
     setState({
@@ -165,7 +137,7 @@ export default function AppFunctional(props) {
     setState({ 
     ...state,
 
-    // message: (`${error.response.data.message}`),
+  
     email: email })
     console.log(evt.target.email, evt.target.value)
     // You will need this to update the value of the input.
@@ -182,7 +154,11 @@ export default function AppFunctional(props) {
       console.log(res)
       setState({
         ...state,
-      message: `${res.data.message}`
+        email: "",
+        
+        
+       
+        message: `${res.data.message}`,
       })
     })
    .catch(err => {
@@ -190,6 +166,7 @@ export default function AppFunctional(props) {
     setState({
       ...state,
       message: `${err.message}`,
+      message: `${err.response.data.message}`
       
     })
    })
@@ -200,7 +177,7 @@ export default function AppFunctional(props) {
     <div id="wrapper" className={props.className}>
      <div className="info">
           <h3 id="coordinates">{`Coordinates (${state.grid[state.index].X}, ${state.grid[state.index].Y})`}</h3>
-          <h3 id="steps">{`You moved ${state.steps} ${state.steps <= 1 ? 'time' : 'times'}`}</h3>
+          <h3 id="steps">{`You moved ${state.steps} ${state.steps === 1 ? 'time' : 'times'}`}</h3>
         </div>
         <div id="grid">
           {
@@ -251,6 +228,7 @@ export default function AppFunctional(props) {
         <input id="email" 
          type="email" 
          placeholder="type email" 
+         value={state.email}
          onChange={onChange}
          />
 
